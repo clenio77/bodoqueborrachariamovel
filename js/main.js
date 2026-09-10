@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initGpsEmergencyButton();
   initFaqAccordion();
   initLiveStatusIndicator();
+  initStickyBarDismiss();
 });
 
 // Número oficial do Bodoque
@@ -174,6 +175,28 @@ function initFaqAccordion() {
         questionBtn.setAttribute('aria-expanded', 'true');
       }
     });
+  });
+}
+
+/**
+ * Barra mobile fixa pode ser dispensada pelo usuário
+ */
+function initStickyBarDismiss() {
+  const bar = document.getElementById('mobile-sticky-bar');
+  const closeBtn = document.getElementById('mobile-sticky-close');
+  if (!bar || !closeBtn) return;
+  try {
+    if (sessionStorage.getItem('stickyDismissed') === '1') {
+      bar.classList.add('is-hidden');
+      document.body.classList.add('sticky-dismissed');
+      return;
+    }
+  } catch (e) { /* sessionStorage indisponível, segue normal */ }
+  closeBtn.addEventListener('click', () => {
+    bar.classList.add('is-hidden');
+    document.body.classList.add('sticky-dismissed');
+    try { sessionStorage.setItem('stickyDismissed', '1'); } catch (e) {}
+    trackConversion('ui_interaction', 'StickyBar_Fechada');
   });
 }
 
