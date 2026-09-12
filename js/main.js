@@ -5,6 +5,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  initUtmAttribution();
   initPhoneTracking();
   initWhatsAppTracking();
   initGpsEmergencyButton();
@@ -21,6 +22,58 @@ const BODOQUE_PHONE = '5534991032716';
 const BODOQUE_DISPLAY_PHONE = '(34) 99103-2716';
 
 /**
+ * Atribuição de origem (UTM) — ex.: perfil da borracharia no Google.
+ * Guarda a origem da sessão e carimba as mensagens de WhatsApp
+ * (inclusive as geradas pelo wizard) para identificar conversões
+ * vindas do perfil. Uso: ?utm_source=google&utm_medium=organic&utm_campaign=perfil-negocio
+ */
+const ORIGEM_KEY = 'bodoque_origem';
+
+function getTrafficOrigin() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const src = params.get('utm_source');
+    if (src) {
+      const medium = params.get('utm_medium') || '';
+      const camp = params.get('utm_campaign') || '';
+      const origin = [src, medium, camp].filter(Boolean).join('/').toLowerCase().replace(/[^a-z0-9/]+/g, '-');
+      sessionStorage.setItem(ORIGEM_KEY, origin);
+      return origin;
+    }
+    return sessionStorage.getItem(ORIGEM_KEY);
+  } catch (e) {
+    return null;
+  }
+}
+
+function friendlyOrigin(origin) {
+  if (!origin) return null;
+  if (origin.startsWith('google/organic')) return 'perfil-google';
+  if (origin.startsWith('google/cpc')) return 'google-ads';
+  return origin;
+}
+
+function initUtmAttribution() {
+  const origin = getTrafficOrigin();
+  if (!origin) return;
+  const tag = friendlyOrigin(origin);
+  // Delegação (capture): cobre links estáticos e os criados depois pelo wizard/pânico
+  document.addEventListener('click', (e) => {
+    const link = e.target && e.target.closest ? e.target.closest('a[href*="wa.me"]') : null;
+    if (!link || link.dataset.origemMarcada) return;
+    try {
+      const url = new URL(link.href);
+      const text = url.searchParams.get('text') || '';
+      if (!/\(origem:/i.test(text)) {
+        url.searchParams.set('text', text + ` (origem: ${tag})`);
+        link.href = url.toString();
+      }
+      link.dataset.origemMarcada = '1';
+    } catch (err) { /* mantém o link original */ }
+  }, true);
+}
+
+/**
  * Disparador unificado de conversão para Google Ads e Google Analytics 4 (DataLayer)
  */
 function trackConversion(action, label) {
@@ -30,6 +83,7 @@ function trackConversion(action, label) {
     event: 'conversion_event',
     conversion_action: action,
     conversion_label: label,
+    traffic_origin: getTrafficOrigin() || 'direto',
     timestamp: new Date().toISOString()
   });
 
