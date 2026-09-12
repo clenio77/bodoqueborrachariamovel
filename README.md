@@ -30,9 +30,10 @@ Landing Page oficial, ultrarrápida, mobile-first e otimizada para campanhas de 
 ├── js/
 │   └── main.js                 # Lógica de GPS no WhatsApp, tracking e FAQ accordion
 └── assets/
-    ├── real-van.png            # Foto real da viatura oficial Bodoque Pneus
-    ├── logo.jpg                # Logomarca do Bodoque
-    ├── hero-van.jpg            # Visual da viatura em atendimento
+    ├── logo-oficial.jpg          # Logotipo oficial Bodoque Pneus (navbar, favicon, schema)
+    ├── van-atendimento-noturno.jpg # Socorro real à noite (hero, galeria, og:image)
+    ├── van-lateral-dia.jpg       # Kombi adesivada de dia (seção credibilidade)
+    ├── van-frente-noite.jpg      # Frente adesivada à noite (galeria)
     └── truck-service.jpg       # Visual do atendimento de linha pesada (caminhões)
 ```
 
