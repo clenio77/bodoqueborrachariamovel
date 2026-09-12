@@ -34,7 +34,7 @@ Landing Page oficial, ultrarrápida, mobile-first e otimizada para campanhas de 
     ├── van-atendimento-noturno.jpg # Socorro real à noite (hero, galeria, og:image)
     ├── van-lateral-dia.jpg       # Kombi adesivada de dia (seção credibilidade)
     ├── van-frente-noite.jpg      # Frente adesivada à noite (galeria)
-    └── truck-service.jpg       # Visual do atendimento de linha pesada (caminhões)
+    └── socorro-linha-pesada-real.jpg # Foto real do perfil Google: pneu de caminhão com truck ao fundo (linha pesada)
 ```
 
 ---
