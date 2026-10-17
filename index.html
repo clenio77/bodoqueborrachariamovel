@@ -27,16 +27,27 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/jpeg" href="assets/logo-oficial.jpg">
 
-  <!-- ======================================================================
-       GOOGLE TAG MANAGER & GOOGLE ADS CONVERSION SNIPPET (TEMPLATE)
-       Insira o seu ID de Conversão do Google Ads (AW-XXXXX) abaixo.
-       ====================================================================== -->
+  <!-- Google tag (gtag.js) - Bodoque Borracharia Móvel -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18045613575"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    // Substitua pelo seu ID de conversão:
-    // gtag('js', new Date());
-    // gtag('config', 'AW-SEU_ID_AQUI');
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    // Inicializa a Tag do Google Ads
+    gtag('config', 'AW-18045613575');
+
+    // Dispara a conversão automaticamente ao clicar em qualquer botão de WhatsApp ou Ligar
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest('a');
+      if (link && link.href) {
+        if (link.href.includes('wa.me') || link.href.includes('whatsapp.com') || link.href.startsWith('tel:')) {
+          gtag('event', 'conversion', {
+            'send_to': 'AW-18045613575/8k8kCLyxjKAdEIfs6JxD'
+          });
+        }
+      }
+    });
   </script>
 
   <!-- Schema.org JSON-LD para Negócio Local / AutoRepair (SEO & Ads Relevancy) -->
