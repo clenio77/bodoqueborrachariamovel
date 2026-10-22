@@ -6,6 +6,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initUtmAttribution();
+  initAnchorRouting();
   initPhoneTracking();
   initWhatsAppTracking();
   initGpsEmergencyButton();
@@ -553,3 +554,35 @@ function initLiveStatusIndicator() {
     Plantão Ativo Agora (${timeString}) — 24 Horas
   `;
 }
+
+/**
+ * Roteamento suave para URLs de anúncios com âncoras (#socorro, #whatsapp, #ligar)
+ */
+function initAnchorRouting() {
+  function handleHash() {
+    const rawHash = (window.location.hash || '').toLowerCase();
+    if (!rawHash) return;
+
+    let targetId = null;
+    if (rawHash === '#socorro' || rawHash === '#whatsapp') {
+      targetId = 'socorro';
+    } else if (rawHash === '#ligar' || rawHash === '#telefone') {
+      targetId = 'ligar';
+    }
+
+    if (targetId) {
+      const el = document.getElementById(targetId);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 150);
+      }
+    }
+  }
+
+  if (window.location.hash) {
+    handleHash();
+  }
+  window.addEventListener('hashchange', handleHash);
+}
+
